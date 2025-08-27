@@ -1,24 +1,48 @@
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import AdminLayout from "./components/Layout";
 
+// Pages
+import Dashboard from "./pages/admin/Dashboard";
+import Employes from "./pages/admin/Employes";
+//import Services from "./pages/admin/Services";
+import Admin from "./pages/admin"; // chemin vers ton fichier admin.js
+import PostesPage from "./pages/admin/PostesPage";
+import Absences from "./pages/admin/Absences";
+import HeuresPrimes from "./pages/admin/HeuresPrimes";
+import Paies from "./pages/admin/Paies";
+import PaiesHistorique from "./pages/admin/PaiesHistorique";
+import Cotisations from "./pages/admin/Cotisations";
+import ParametresContrats from "./pages/admin/ParametresContrats";
+import ParametresPostes from "./pages/admin/ParametresPostes";
+import ParametresTaux from "./pages/admin/ParametresTaux";
+import ParametresGeneral from "./pages/admin/ParametresGeneral";
+import EmployeDetailPage from "./pages/admin/EmployeDetailPage";
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <Routes>
+          <Route path="/" element={<Admin />} />
+        {/* Toutes les routes /admin passent par AdminLayout */}
+        <Route path="/admin" element={<AdminLayout />}>
+          <Route path="dashboard" element={<Dashboard />} />
+          <Route path="employes" element={<Employes />} />
+        
+          <Route path="employes/:id" element={<EmployeDetailPage />} />
+          
+          <Route path="poste" element={<PostesPage />} />
+          {/* <Route path="services/:id/postes" element={<PostesPage />} /> */}
+          <Route path="absences" element={<Absences />} />
+          <Route path="heures-primes" element={<HeuresPrimes />} />
+          <Route path="paies" element={<Paies />} />
+          <Route path="paies/historique" element={<PaiesHistorique />} />
+          <Route path="cotisations" element={<Cotisations />} />
+          <Route path="parametres/contrats" element={<ParametresContrats />} />
+          <Route path="parametres/postes" element={<ParametresPostes />} />
+          <Route path="parametres/taux" element={<ParametresTaux />} />
+          <Route path="parametres/general" element={<ParametresGeneral />} />
+        </Route>
+      </Routes>
+    </Router>
   );
 }
 
