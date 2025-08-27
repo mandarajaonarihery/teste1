@@ -1,7 +1,7 @@
 
            // src/service/cotisationService.js
 
-const API_URL = "http://localhost:5000/cotisation-sociale";
+const API_URL = process.env.REACT_APP_API_BASE_URL + "/cotisation-sociale";
 
 // 🔹 Liste des cotisations
 export async function getCotisations() {
@@ -23,7 +23,7 @@ export async function addCotisation(data) {
   }
   return res.json();
 }
-  
+
 // 🔹 Récupérer une cotisation par ID
 export async function getCotisationById(id) {
   const res = await fetch(`${API_URL}/${id}`);

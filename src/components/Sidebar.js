@@ -4,7 +4,6 @@ import {
   Home,
   Users,
   Briefcase,
-  Calendar,
   Clock,
   Star,
   Wallet,
@@ -16,38 +15,23 @@ import {
   ChevronRight,
   Menu,
   X,
+  TrendingDown
 } from "lucide-react";
 
 const links = [
+  { label: "Tableau de bord", icon: <Home size={20} />, to: "/admin/dashboard" },
+  { label: "Employés", icon: <Users size={20} />, to: "/admin/employes" },
+  { label: "Poste", icon: <Briefcase size={20} />, to: "/admin/poste" },
   {
-    label: "Tableau de bord",
-    icon: <Home size={20} />,
-    to: "/admin/dashboard",
-  },
-  {
-    label: "Employés",
-    icon: <Users size={20} />,
-    to: "/admin/employes",
-  },
-  {
-    label: "Poste",
-    icon: <Briefcase size={20} />,
-    to: "/admin/poste",
-  },
-  {
-    label: "Retenues",
-    icon: <Calendar size={20} />,
-    to :"admin/retenues",
-  },
-  {
-    label: "Paies",
+    label: "Gestion des paies",
     icon: <Wallet size={20} />,
-    to : "/admin/paies",
-  },
-  {
-    label: "Cotisations",
-    icon: <Percent size={20} />,
-    to: "/admin/cotisations",
+    children: [
+      { label: "Salaires", to: "/admin/paies", icon: <Clock size={20} /> },
+      { label: "Primes", to: "/admin/primes", icon: <Star size={20} /> },
+      { label: "Retenues", to: "/admin/retenues", icon: <TrendingDown size={20} /> },
+      { label: "Cotisations", to: "/admin/cotisations", icon: <Percent size={20} /> },
+      { label: "Historique", to: "/admin/historique-salaires", icon: <History size={20} /> },
+    ],
   },
   {
     label: "Paramètres",
@@ -64,57 +48,57 @@ const links = [
 const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(true);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
-  const [openMenus, setOpenMenus] = useState({}); // pour gérer sous-sections ouvertes
+  const [openMenus, setOpenMenus] = useState({});
+  const [hoveredMenu, setHoveredMenu] = useState(null);
 
   const toggleSidebar = () => setIsOpen(!isOpen);
   const toggleMobileSidebar = () => setIsMobileOpen(!isMobileOpen);
-
+  
   const toggleSubMenu = (label) => {
     setOpenMenus((prev) => ({ ...prev, [label]: !prev[label] }));
   };
 
   const linkClass = ({ isActive }) =>
-    `flex items-center gap-3 px-4 py-3 text-sm font-medium rounded-lg transition-colors
-     ${
-       isActive
-         ? "bg-blue-100 text-blue-700 border-l-4 border-blue-600"
-         : "text-gray-700 hover:bg-gray-50"
-     }`;
+    `flex items-center gap-3 px-4 py-3 text-sm font-medium rounded-lg transition-all duration-200 ${
+      isActive
+        ? "bg-gradient-to-r from-blue-50 to-blue-100 text-blue-700 border-l-4 border-blue-600 shadow-sm"
+        : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+    }`;
 
   return (
     <>
-      {/* ---- Mobile Sidebar ---- */}
+      {/* Mobile Sidebar */}
       <aside
-        className={`fixed top-0 left-0 h-full w-64 bg-white shadow-lg border-r z-40 transform transition-transform duration-300 md:hidden
-        ${isMobileOpen ? "translate-x-0" : "-translate-x-full"}`}
+        className={`fixed top-0 left-0 h-full w-64 bg-white shadow-xl border-r z-40 transform transition-transform duration-300 ease-in-out md:hidden ${
+          isMobileOpen ? "translate-x-0" : "-translate-x-full"
+        }`}
       >
-        <div className="flex items-center justify-between px-4 py-4 border-b">
+        <div className="flex items-center justify-between px-4 py-4 border-b bg-gradient-to-r from-blue-50 to-white">
           <h2 className="text-lg font-bold text-gray-800">Menu</h2>
-          <button className="text-gray-600" onClick={toggleMobileSidebar}>
+          <button 
+            className="text-gray-600 hover:bg-gray-100 p-1 rounded-lg transition-colors" 
+            onClick={toggleMobileSidebar}
+          >
             <X size={20} />
           </button>
         </div>
 
-        <nav className="mt-4 flex flex-col space-y-1 flex-1">
+        <nav className="mt-4 flex flex-col space-y-1 flex-1 px-2">
           {links.map((item) =>
             item.children ? (
               <div key={item.label}>
                 <button
-                  className="flex items-center justify-between w-full px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50"
+                  className="flex items-center justify-between w-full px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-lg transition-colors"
                   onClick={() => toggleSubMenu(item.label)}
                 >
                   <span className="flex items-center gap-3">
                     {item.icon}
                     <span>{item.label}</span>
                   </span>
-                  {openMenus[item.label] ? (
-                    <ChevronDown size={16} />
-                  ) : (
-                    <ChevronRight size={16} />
-                  )}
+                  {openMenus[item.label] ? <ChevronDown size={16} /> : <ChevronRight size={16} />}
                 </button>
                 {openMenus[item.label] && (
-                  <div className="ml-8 flex flex-col">
+                  <div className="ml-6 flex flex-col border-l border-gray-200 pl-2 mt-1 mb-2">
                     {item.children.map((child) => (
                       <NavLink
                         key={child.to}
@@ -122,6 +106,7 @@ const Sidebar = () => {
                         className={linkClass}
                         onClick={toggleMobileSidebar}
                       >
+                        {child.icon && <span className="ml-2">{child.icon}</span>}
                         {child.label}
                       </NavLink>
                     ))}
@@ -143,46 +128,81 @@ const Sidebar = () => {
         </nav>
       </aside>
 
-      {/* ---- Desktop Sidebar ---- */}
+      {/* Desktop Sidebar */}
       <aside
-        className={`hidden md:flex md:flex-col h-ful  border-r border-gray-200l bg-white  transition-all duration-300
-        ${isOpen ? "w-64" : "w-16"}`}
+        className={`hidden md:flex md:flex-col h-full border-r border-gray-200 bg-white shadow-sm transition-all duration-300 ease-in-out ${
+          isOpen ? "w-64" : "w-16"
+        }`}
       >
-        <div className="flex items-center justify-between px-4 py-4 border-b">
+        <div className="flex items-center justify-between px-4 py-4 border-b bg-gradient-to-r from-blue-50 to-white">
           {isOpen && <h2 className="text-lg font-bold text-gray-800">Menu</h2>}
-          <button className="text-gray-600" onClick={toggleSidebar}>
+          <button 
+            className="text-gray-600 hover:bg-gray-100 p-1 rounded-lg transition-colors" 
+            onClick={toggleSidebar}
+          >
             {isOpen ? <ChevronLeft size={20} /> : <Menu size={20} />}
           </button>
         </div>
 
-        <nav className="mt-4 flex flex-col space-y-1 flex-1">
+        <nav className="mt-4 flex flex-col space-y-1 flex-1 px-2">
           {links.map((item) =>
             item.children ? (
-              <div key={item.label}>
+              <div 
+                key={item.label} 
+                className="relative"
+                onMouseEnter={() => !isOpen && setHoveredMenu(item.label)}
+                onMouseLeave={() => !isOpen && setHoveredMenu(null)}
+              >
                 <button
-                  className={`flex items-center justify-between w-full px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 ${
+                  className={`flex items-center justify-between w-full px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-lg transition-colors ${
                     isOpen ? "" : "justify-center"
                   }`}
-                  onClick={() => toggleSubMenu(item.label)}
+                  onClick={() => isOpen && toggleSubMenu(item.label)}
                 >
                   <span className="flex items-center gap-3">
                     {item.icon}
                     {isOpen && <span>{item.label}</span>}
                   </span>
-                  {isOpen &&
-                    (openMenus[item.label] ? (
-                      <ChevronDown size={16} />
-                    ) : (
-                      <ChevronRight size={16} />
-                    ))}
+                  {isOpen && (openMenus[item.label] ? <ChevronDown size={16} /> : <ChevronRight size={16} />)}
                 </button>
-                {openMenus[item.label] && isOpen && (
-                  <div className="ml-8 flex flex-col">
+
+                {/* Sous-menu en mode étendu */}
+                {isOpen && openMenus[item.label] && (
+                  <div className="ml-6 flex flex-col border-l border-gray-200 pl-2 mt-1 mb-2">
                     {item.children.map((child) => (
                       <NavLink key={child.to} to={child.to} className={linkClass}>
+                        {child.icon && <span className="ml-2">{child.icon}</span>}
                         {child.label}
                       </NavLink>
                     ))}
+                  </div>
+                )}
+
+                {/* Sous-menu en mode réduit (apparaît au survol) */}
+                {!isOpen && hoveredMenu === item.label && (
+                  <div className="absolute left-full top-0 ml-1 w-56 bg-white shadow-lg rounded-md py-2 z-50 border border-gray-200">
+                    <div className="px-3 py-2 font-medium text-gray-700 border-b border-gray-100 flex items-center gap-2">
+                      {item.icon}
+                      {item.label}
+                    </div>
+                    <div className="flex flex-col">
+                      {item.children.map((child) => (
+                        <NavLink 
+                          key={child.to} 
+                          to={child.to} 
+                          className={({ isActive }) => 
+                            `flex items-center gap-3 px-4 py-2.5 text-sm transition-colors ${
+                              isActive 
+                                ? "bg-blue-50 text-blue-700 font-medium" 
+                                : "text-gray-600 hover:bg-gray-50"
+                            }`
+                          }
+                        >
+                          {child.icon && child.icon}
+                          {child.label}
+                        </NavLink>
+                      ))}
+                    </div>
                   </div>
                 )}
               </div>
@@ -196,13 +216,13 @@ const Sidebar = () => {
         </nav>
       </aside>
 
-      {/* ---- Mobile Toggle Button ---- */}
+      {/* Mobile toggle button */}
       {!isMobileOpen && (
         <button
-          className="md:hidden fixed top-4 left-4 z-50 bg-white p-2"
+          className="md:hidden fixed top-4 left-4 z-50 bg-white p-2 rounded-lg shadow-md border border-gray-200"
           onClick={toggleMobileSidebar}
         >
-          <Menu size={24} />
+          <Menu size={24} className="text-gray-700" />
         </button>
       )}
     </>

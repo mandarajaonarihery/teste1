@@ -8,7 +8,7 @@ import Employes from "./pages/admin/Employes";
 import Admin from "./pages/admin"; // chemin vers ton fichier admin.js
 import PostesPage from "./pages/admin/PostesPage";
 import Absences from "./pages/admin/Absences";
-import HeuresPrimes from "./pages/admin/HeuresPrimes";
+import Primes from "./pages/admin/Primes";
 import Paies from "./pages/admin/Paies";
 import PaiesHistorique from "./pages/admin/PaiesHistorique";
 import Cotisations from "./pages/admin/Cotisations";
@@ -32,7 +32,7 @@ function App() {
           <Route path="poste" element={<PostesPage />} />
           {/* <Route path="services/:id/postes" element={<PostesPage />} /> */}
           <Route path="absences" element={<Absences />} />
-          <Route path="heures-primes" element={<HeuresPrimes />} />
+          <Route path="primes" element={<Primes />} />
           <Route path="paies" element={<Paies />} />
           <Route path="paies/historique" element={<PaiesHistorique />} />
           <Route path="cotisations" element={<Cotisations />} />
