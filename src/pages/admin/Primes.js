@@ -1,4 +1,3 @@
-// src/pages/Primes.js
 import React, { useState, useEffect } from "react";
 import { getPrimes } from "../../service/primeService";
 import Card from "../../components/common/Card";
@@ -6,16 +5,19 @@ import AddPrimeForm from "../../components/modalComponents/AddPrimeForm";
 
 export default function Primes() {
   const [primes, setPrimes] = useState([]);
+  const [filteredPrimes, setFilteredPrimes] = useState([]);
   const [page, setPage] = useState(1);
   const [limit] = useState(10);
   const [loading, setLoading] = useState(false);
   const [showForm, setShowForm] = useState(false);
+  const [search, setSearch] = useState("");
 
   const fetchPrimes = async () => {
     setLoading(true);
     try {
       const response = await getPrimes(page, limit);
-      setPrimes(response.data || []); // <-- récupère le tableau de primes
+      setPrimes(response.data || []);
+      setFilteredPrimes(response.data || []);
     } catch (error) {
       alert("Erreur lors de la récupération des primes");
       console.error(error);
@@ -27,6 +29,22 @@ export default function Primes() {
   useEffect(() => {
     fetchPrimes();
   }, [page]);
+
+  // Filtrage local à chaque changement de search
+  useEffect(() => {
+    if (!search) {
+      setFilteredPrimes(primes);
+    } else {
+      const lowerSearch = search.toLowerCase();
+      const filtered = primes.filter(
+        (p) =>
+          p.nom.toLowerCase().includes(lowerSearch) ||
+          p.employe?.nom?.toLowerCase().includes(lowerSearch) ||
+          p.employe?.prenom?.toLowerCase().includes(lowerSearch)
+      );
+      setFilteredPrimes(filtered);
+    }
+  }, [search, primes]);
 
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col">
@@ -41,6 +59,17 @@ export default function Primes() {
           </button>
         </div>
 
+        {/* Barre de recherche */}
+        <div className="mb-4">
+          <input
+            type="text"
+            placeholder="Rechercher par nom de prime ou employé..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          />
+        </div>
+
         {loading ? (
           <p>Chargement...</p>
         ) : (
@@ -53,8 +82,8 @@ export default function Primes() {
               </tr>
             </thead>
             <tbody>
-              {primes.length > 0 ? (
-                primes.map((prime) => (
+              {filteredPrimes.length > 0 ? (
+                filteredPrimes.map((prime) => (
                   <tr key={prime.id}>
                     <td className="px-4 py-2 border">{prime.nom}</td>
                     <td className="px-4 py-2 border">{prime.montant}</td>

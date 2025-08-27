@@ -1,4 +1,4 @@
-const API_URL = process.env.REACT_APP_API_BASE_URL + "/employe";
+const API_URL = process.env.REACT_APP_API_BASE_URL + "/employe/";
 
 // 🔹 Récupérer la liste
 export async function getEmployes(page = 1, limit = 10) {

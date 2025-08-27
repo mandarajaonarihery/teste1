@@ -317,33 +317,7 @@ const [loadingPostes, setLoadingPostes] = useState(true);
               )}
             </div>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Salaire de base
-              </label>
-              <input
-                type="number"
-                name="salaire_base"
-                placeholder="Salaire de base"
-                value={formData.salaire_base}
-                onChange={handleChange}
-                className="w-full border border-gray-300 rounded-lg p-3 text-gray-900 focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Description du poste
-              </label>
-              <textarea
-                name="description"
-                placeholder="Description des tâches et responsabilités"
-                value={formData.description}
-                onChange={handleChange}
-                rows="4"
-                className="w-full border border-gray-300 rounded-lg p-3 text-gray-900 focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-              />
-            </div>
+          
           </div>
         );
 

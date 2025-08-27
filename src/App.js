@@ -17,6 +17,7 @@ import ParametresPostes from "./pages/admin/ParametresPostes";
 import ParametresTaux from "./pages/admin/ParametresTaux";
 import ParametresGeneral from "./pages/admin/ParametresGeneral";
 import EmployeDetailPage from "./pages/admin/EmployeDetailPage";
+import Retenue from "./pages/admin/Retenue";
 function App() {
   return (
     <Router>
@@ -32,6 +33,7 @@ function App() {
           <Route path="poste" element={<PostesPage />} />
           {/* <Route path="services/:id/postes" element={<PostesPage />} /> */}
           <Route path="absences" element={<Absences />} />
+          <Route path="retenues" element={<Retenue />} />
           <Route path="primes" element={<Primes />} />
           <Route path="paies" element={<Paies />} />
           <Route path="paies/historique" element={<PaiesHistorique />} />
