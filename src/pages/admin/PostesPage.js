@@ -119,8 +119,8 @@ export default function PostesPage() {
             Chargement des postes...
           </div>
         ) : (
-          <div className="overflow-x-auto">
-            <table className="min-w-full">
+          <div className="overflow-x-auto bg-white rounded-xl shadow">
+          <table className="min-w-full border">
               <thead className="bg-gradient-to-r from-blue-100 to-blue-200">
                 <tr>
                   <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700">

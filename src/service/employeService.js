@@ -9,7 +9,7 @@ export async function getEmployes(page = 1, limit = 10) {
 
 // 🔹 Récupérer par ID
 export async function getEmployeById(id) {
-  const res = await fetch(`${API_URL}/${id}`);
+  const res = await fetch(`${API_URL}${id}`);
   if (!res.ok) throw new Error("Erreur récupération employé");
   return res.json();
 }

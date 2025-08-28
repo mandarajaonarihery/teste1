@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
-
+import { useSnackbar } from "../ui/SnackbarContext"; 
 export default function PosteForm({ poste, onClose, onSubmit }) {
   const [nomPoste, setNomPoste] = useState("");
   const [description, setDescription] = useState("");
 const [salaireBase, setSalaireBase] = useState(0);
-
+const { showSnackbar } = useSnackbar();
 useEffect(() => {
   if (poste) {
     setNomPoste(poste.titre);
@@ -30,7 +30,7 @@ useEffect(() => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!nomPoste.trim()) {
-      alert("Le nom du poste est requis");
+      showSnackbar("Le nom du poste est requis");
       return;
     }
     onSubmit({ nomPoste, description, salaire_base: salaireBase});

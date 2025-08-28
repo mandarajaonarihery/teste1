@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { addEmploye } from "../../service/employeService";
 import { getPostes } from "../../service/posteService";
-
+import { useSnackbar } from "../ui/SnackbarContext"; 
 const steps = [
   { key: "infos", label: "Informations personnelles" },
   { key: "coordonnees", label: "Coordonnées" },
@@ -39,6 +39,7 @@ export default function EmployeFormWizard({ onClose = () => {} }) {
   });
 
   const [validation, setValidation] = useState({});
+    const { showSnackbar } = useSnackbar();
    const [postes, setPostes] = useState([]);
 const [loadingPostes, setLoadingPostes] = useState(true);
  const handleSubmit = async () => {
@@ -61,11 +62,11 @@ const [loadingPostes, setLoadingPostes] = useState(true);
     if (formData.profileFile) fd.append("profileFile", formData.profileFile);
 
     await addEmploye(fd);
-    alert("Employé ajouté avec succès !");
+    showSnackbar("Employé ajouté avec succès !");
     onClose();
   } catch (err) {
     console.error("Erreur ajout employé :", err);
-    alert("Erreur lors de la création de l'employé");
+    showSnackbar("Erreur lors de la création de l'employé");
   }
 };
 

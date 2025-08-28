@@ -1,7 +1,7 @@
 // src/components/modalComponents/AddCotisationForm.js
 import { useState } from "react";
 import { addCotisation } from "../../service/cotisationService";
-
+import { useSnackbar } from "../ui/SnackbarContext"; 
 const AddCotisationForm = ({ onClose, onSuccess }) => {
   const [formData, setFormData] = useState({
     nomCotisation: "",
@@ -11,7 +11,9 @@ const AddCotisationForm = ({ onClose, onSuccess }) => {
   });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+//  const [showSuggestions, setShowSuggestions] = useState(false);
 
+  const { showSnackbar } = useSnackbar();
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -30,6 +32,7 @@ const AddCotisationForm = ({ onClose, onSuccess }) => {
       };
 
       const added = await addCotisation(payload);
+      showSnackbar("Cotisation créée avec succès ✅"); // 🎉 succès
       onSuccess && onSuccess(added.data); // Mettre à jour la liste
       onClose();
     } catch (err) {

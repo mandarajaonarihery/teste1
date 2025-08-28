@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { getEmployes } from "../../service/employeService";
-import { Info, Plus } from "lucide-react";
+import { Info, Plus,Users } from "lucide-react";
 import Card from "../../components/common/Card";
 import { useNavigate } from "react-router-dom";
 import EmployeFormWizard from "../../components/modalComponents/EmployeForm";
@@ -12,22 +12,25 @@ export default function EmployesPage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [showWizard, setShowWizard] = useState(false);
   const navigate = useNavigate();
-
   useEffect(() => {
-    async function fetchEmployes() {
-      try {
-        const response = await getEmployes();
-        const allEmployes = Object.values(response.data)
-          .flatMap((group) => Object.values(group).flat());
-        setEmployes(allEmployes);
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    }
     fetchEmployes();
   }, []);
+  
+  async function fetchEmployes() {
+    setLoading(true);
+    try {
+      const response = await getEmployes();
+      const allEmployes = Object.values(response.data)
+        .flatMap((group) => Object.values(group).flat());
+      setEmployes(allEmployes);
+      setError(null);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  }
+  
 
   const filtered = employes.filter(
     (emp) =>
@@ -44,12 +47,19 @@ export default function EmployesPage() {
           <h1 className="text-3xl font-extrabold text-gray-800">
             Liste des employés
           </h1>
-          <button
+          {/* <button
             onClick={() => setShowWizard(true)}
             className="flex items-center gap-2 bg-blue-600 text-white px-6 py-2 rounded-full hover:bg-blue-700 transition"
           >
             <Plus size={20} /> Ajouter
-          </button>
+          </button> */}
+          <button
+               onClick={() => setShowWizard(true)}
+              className="inline-flex items-center gap-2 rounded-xl bg-indigo-600 text-white px-4 py-2 shadow-md hover:bg-indigo-700 transition"
+            >
+              <Users size={20} />
+              <span>Nouvel employé</span>
+            </button>
         </div>
 
         {/* Champ de recherche */}
@@ -68,8 +78,8 @@ export default function EmployesPage() {
         {error && <p className="text-center text-red-500">{error}</p>}
 
         {/* Tableau des employés */}
-        <div className="overflow-x-auto">
-          <table className="w-full">
+        <div className="overflow-x-auto bg-white rounded-xl shadow">
+          <table className="min-w-full border">
           <thead className="bg-gradient-to-r from-blue-100 to-blue-200">
               <tr >
                 <th className="py-3 px-4 text-left">Photo</th>
@@ -123,7 +133,13 @@ export default function EmployesPage() {
           </table>
         </div>
         {showWizard && (
-          <EmployeFormWizard onClose={() => setShowWizard(false)} />
+          <EmployeFormWizard
+          onClose={() => setShowWizard(false)}
+          onAdded={() => {
+            fetchEmployes(); // Recharge la liste après ajout
+            setShowWizard(false);
+          }}
+        />
         )}
       </Card>
     </div>

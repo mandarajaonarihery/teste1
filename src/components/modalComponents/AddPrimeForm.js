@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { createPrime } from "../../service/primeService";
 import { getEmployes } from "../../service/employeService";
-
+import { useSnackbar } from "../ui/SnackbarContext"; 
 const AddPrimeForm = ({ onClose, onAdded }) => {
   const [nom, setNom] = useState("");
   const [montant, setMontant] = useState("");
@@ -12,7 +12,7 @@ const AddPrimeForm = ({ onClose, onAdded }) => {
   const [filteredEmployes, setFilteredEmployes] = useState([]);
   const [error, setError] = useState("");
   const [showSuggestions, setShowSuggestions] = useState(false);
-
+  const { showSnackbar } = useSnackbar();
   useEffect(() => {
     const fetchEmployes = async () => {
       try {
@@ -60,6 +60,7 @@ const AddPrimeForm = ({ onClose, onAdded }) => {
     try {
       const primeData = { nom, montant, employeId: parseInt(employeId, 10) };
       await createPrime(primeData);
+      showSnackbar("Prime créée avec succès", "success");
       if (onAdded) onAdded();
       onClose();
     } catch (err) {

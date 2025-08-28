@@ -7,7 +7,6 @@ import {
   Clock,
   Star,
   Wallet,
-  History,
   Percent,
   Settings,
   ChevronLeft,
@@ -15,7 +14,8 @@ import {
   ChevronRight,
   Menu,
   X,
-  TrendingDown
+  TrendingDown,
+  FileText,  
 } from "lucide-react";
 
 const links = [
@@ -26,21 +26,10 @@ const links = [
     label: "Gestion des paies",
     icon: <Wallet size={20} />,
     children: [
-      { label: "Salaires", to: "/admin/paies", icon: <Clock size={20} /> },
+      { label: "Bulletin", to: "/admin/paies", icon: <FileText size={20} /> },
       { label: "Primes", to: "/admin/primes", icon: <Star size={20} /> },
       { label: "Retenues", to: "/admin/retenues", icon: <TrendingDown size={20} /> },
       { label: "Cotisations", to: "/admin/cotisations", icon: <Percent size={20} /> },
-      { label: "Historique", to: "/admin/historique-salaires", icon: <History size={20} /> },
-    ],
-  },
-  {
-    label: "Paramètres",
-    icon: <Settings size={20} />,
-    children: [
-      { label: "Types de contrats", to: "/admin/parametres/contrats" },
-      { label: "Postes standards", to: "/admin/parametres/postes" },
-      { label: "Taux & Cotisations", to: "/admin/parametres/taux" },
-      { label: "Généraux", to: "/admin/parametres/general" },
     ],
   },
 ];
@@ -59,7 +48,7 @@ const Sidebar = () => {
   };
 
   const linkClass = ({ isActive }) =>
-    `flex items-center gap-3 px-4 py-3 text-sm font-medium rounded-md transition-colors duration-200 ease-in-out ${
+    `flex items-center px-4 py-3 text-sm font-medium rounded-md transition-colors duration-200 ease-in-out ${
       isActive
         ? "bg-blue-100 text-blue-800 border-l-4 border-blue-600 shadow-md"
         : "text-gray-700 hover:bg-gray-100 hover:text-gray-900"
@@ -75,8 +64,8 @@ const Sidebar = () => {
       >
         <div className="flex items-center justify-between px-4 py-4 border-b bg-gradient-to-r from-blue-100 to-blue-50">
           <h2 className="text-lg font-bold text-gray-800">Menu</h2>
-          <button 
-            className="text-gray-700 hover:bg-gray-200 p-2 rounded-md transition-colors" 
+          <button
+            className="text-gray-700 hover:bg-gray-200 p-2 rounded-md transition-colors"
             onClick={toggleMobileSidebar}
           >
             <X size={20} />
@@ -92,7 +81,7 @@ const Sidebar = () => {
                   onClick={() => toggleSubMenu(item.label)}
                 >
                   <span className="flex items-center gap-3">
-                    {item.icon}
+                    <span className="w-6 h-6 flex items-center justify-center">{item.icon}</span>
                     <span>{item.label}</span>
                   </span>
                   {openMenus[item.label] ? <ChevronDown size={16} /> : <ChevronRight size={16} />}
@@ -106,7 +95,7 @@ const Sidebar = () => {
                         className={linkClass}
                         onClick={toggleMobileSidebar}
                       >
-                        {child.icon && <span className="ml-2">{child.icon}</span>}
+                        <span className="w-6 h-6 flex items-center justify-center">{child.icon}</span>
                         {child.label}
                       </NavLink>
                     ))}
@@ -120,7 +109,7 @@ const Sidebar = () => {
                 className={linkClass}
                 onClick={toggleMobileSidebar}
               >
-                {item.icon}
+                <span className="w-6 h-6 flex items-center justify-center">{item.icon}</span>
                 <span>{item.label}</span>
               </NavLink>
             )
@@ -136,8 +125,8 @@ const Sidebar = () => {
       >
         <div className="flex items-center justify-between px-4 py-4 border-b bg-gradient-to-r from-blue-100 to-blue-50">
           {isOpen && <h2 className="text-lg font-bold text-gray-800">Menu</h2>}
-          <button 
-            className="text-gray-700 hover:bg-gray-200 p-2 rounded-md transition-colors" 
+          <button
+            className="text-gray-700 hover:bg-gray-200 p-2 rounded-md transition-colors"
             onClick={toggleSidebar}
           >
             {isOpen ? <ChevronLeft size={20} /> : <Menu size={20} />}
@@ -147,23 +136,24 @@ const Sidebar = () => {
         <nav className="mt-4 flex flex-col space-y-1 px-2">
           {links.map((item) =>
             item.children ? (
-              <div 
-                key={item.label} 
+              <div
+                key={item.label}
                 className="relative"
                 onMouseEnter={() => !isOpen && setHoveredMenu(item.label)}
                 onMouseLeave={() => !isOpen && setHoveredMenu(null)}
               >
                 <button
-                  className={`flex items-center justify-between w-full px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-md transition-colors ${
-                    isOpen ? "" : "justify-center"
+                  className={`flex items-center w-full px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-md transition-colors ${
+                    isOpen ? "justify-between" : "justify-center"
                   }`}
                   onClick={() => isOpen && toggleSubMenu(item.label)}
                 >
-                  <span className="flex items-center gap-3">
-                    {item.icon}
+                  <span className={`flex items-center ${isOpen ? "gap-3" : ""}`}>
+                    <span className="w-6 h-6 flex items-center justify-center">{item.icon}</span>
                     {isOpen && <span>{item.label}</span>}
                   </span>
-                  {isOpen && (openMenus[item.label] ? <ChevronDown size={16} /> : <ChevronRight size={16} />)}
+                  {isOpen &&
+                    (openMenus[item.label] ? <ChevronDown size={16} /> : <ChevronRight size={16} />)}
                 </button>
 
                 {/* Sous-menu en mode étendu */}
@@ -171,34 +161,34 @@ const Sidebar = () => {
                   <div className="ml-6 flex flex-col border-l border-gray-200 pl-2 mt-1 mb-2">
                     {item.children.map((child) => (
                       <NavLink key={child.to} to={child.to} className={linkClass}>
-                        {child.icon && <span className="ml-2">{child.icon}</span>}
+                        <span className="w-6 h-6 flex items-center justify-center">{child.icon}</span>
                         {child.label}
                       </NavLink>
                     ))}
                   </div>
                 )}
 
-                {/* Sous-menu en mode réduit (apparaît au survol) */}
+                {/* Sous-menu en mode réduit (au survol) */}
                 {!isOpen && hoveredMenu === item.label && (
                   <div className="absolute left-full top-0 ml-1 w-56 bg-white shadow-lg rounded-md py-2 z-50 border border-gray-200">
                     <div className="px-3 py-2 font-medium text-gray-700 border-b border-gray-100 flex items-center gap-2">
-                      {item.icon}
+                      <span className="w-6 h-6 flex items-center justify-center">{item.icon}</span>
                       {item.label}
                     </div>
                     <div className="flex flex-col">
                       {item.children.map((child) => (
-                        <NavLink 
-                          key={child.to} 
-                          to={child.to} 
-                          className={({ isActive }) => 
+                        <NavLink
+                          key={child.to}
+                          to={child.to}
+                          className={({ isActive }) =>
                             `flex items-center gap-3 px-4 py-2.5 text-sm transition-colors ${
-                              isActive 
-                                ? "bg-blue-100 text-blue-800 font-medium" 
+                              isActive
+                                ? "bg-blue-100 text-blue-800 font-medium"
                                 : "text-gray-700 hover:bg-gray-100"
                             }`
                           }
                         >
-                          {child.icon && child.icon}
+                          <span className="w-6 h-6 flex items-center justify-center">{child.icon}</span>
                           {child.label}
                         </NavLink>
                       ))}
@@ -208,7 +198,7 @@ const Sidebar = () => {
               </div>
             ) : (
               <NavLink key={item.to} to={item.to} className={linkClass}>
-                {item.icon}
+                <span className="w-6 h-6 flex items-center justify-center">{item.icon}</span>
                 {isOpen && <span>{item.label}</span>}
               </NavLink>
             )

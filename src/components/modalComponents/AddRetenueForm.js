@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { addRetenue } from "../../service/retenueService";
 import { getEmployes } from "../../service/employeService";
-
+import { useSnackbar } from "../ui/SnackbarContext"; 
 const AddRetenueForm = ({ onClose, onAdded }) => {
   const [type, setType] = useState("");
   const [montant, setMontant] = useState("");
@@ -13,7 +13,7 @@ const AddRetenueForm = ({ onClose, onAdded }) => {
   const [filteredEmployes, setFilteredEmployes] = useState([]);
   const [error, setError] = useState("");
   const [showSuggestions, setShowSuggestions] = useState(false);
-
+  const { showSnackbar } = useSnackbar();
   // Récupération des employés
   useEffect(() => {
     const fetchEmployes = async () => {
@@ -69,9 +69,11 @@ const AddRetenueForm = ({ onClose, onAdded }) => {
         employeId: Number(employeId),
       });
       if (onAdded) onAdded();
+      showSnackbar("Retenue ajoutée avec succès", "success");
       onClose();
     } catch (err) {
       console.error(err);
+      showSnackbar("Erreur lors de l'ajout de la retenue", "error");
       setError(
         err.response?.data?.message?.join?.(", ") || "Erreur lors de l'ajout de la retenue"
       );

@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import {
   TrendingUp,
@@ -130,12 +131,16 @@ function statCounts(employes) {
 export default function DashboardRH({ onAddEmploye, onAddBulletin }) {
   const { data, loading, error, refetch } = useEmployes();
   const [q, setQ] = useState("");
-
+  const navigate = useNavigate();
   const employesFlat = useMemo(() => flattenEmployes(data), [data]);
   const counts = useMemo(() => statCounts(employesFlat), [employesFlat]);
   const byPoste = useMemo(() => groupByPoste(employesFlat), [employesFlat]);
   const byMonth = useMemo(() => hiresByMonth(employesFlat), [employesFlat]);
 
+  const handleClick = () => {
+    navigate("/admin/paies");
+  };
+  
   const filtered = useMemo(() => {
     if (!q.trim()) return employesFlat.slice(0, 6);
     const v = q.toLowerCase();
@@ -182,15 +187,15 @@ export default function DashboardRH({ onAddEmploye, onAddBulletin }) {
               <RefreshCw size={18} />
               <span className="hidden md:inline">Rafraîchir</span>
             </button>
-            <button
+            {/* <button
               onClick={onAddEmploye}
               className="inline-flex items-center gap-2 rounded-xl bg-indigo-600 text-white px-4 py-2 shadow-md hover:bg-indigo-700 transition"
             >
               <Users size={20} />
               <span>Nouvel employé</span>
-            </button>
+            </button> */}
             <button
-              onClick={onAddBulletin}
+              onClick={handleClick}
               className="inline-flex items-center gap-2 rounded-xl bg-blue-600 text-white px-4 py-2 shadow-md hover:bg-blue-700 transition"
             >
               <FilePlus2 size={20} />
@@ -220,32 +225,41 @@ export default function DashboardRH({ onAddEmploye, onAddBulletin }) {
 
         {/* Graphiques */}
         <div className="grid grid-cols-1 xl:grid-cols-3 gap-8 mb-10">
-          <Card className="xl:col-span-2">
+        <Card className="xl:col-span-2" >
             <div className="flex items-center justify-between mb-4">
-              <h3 className="font-semibold text-gray-900">Répartition par poste</h3>
-              <span className="text-xs text-gray-500">Top postes</span>
+              <h3 className="font-semibold text-gray-900">Employés récents</h3>
+              {!loading && <span className="text-xs text-gray-500">{filtered.length} affichés</span>}
             </div>
-            <div className="h-72">
+            <div className="divide-y">
               {loading ? (
-                <Skeleton className="h-full" />
+                <>
+                  <Skeleton className="h-14" />
+                  <Skeleton className="h-14" />
+                  <Skeleton className="h-14" />
+                  <Skeleton className="h-14" />
+                </>
               ) : (
-                <ResponsiveContainer width="100%" height="100%">
-                  <BarChart data={byPoste}>
-                    <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" />
-                    <XAxis
-                      dataKey="name"
-                      tick={{ fontSize: 12, fill: "#374151" }}
-                      interval={0}
-                      angle={-15}
-                      textAnchor="end"
-                      height={60}
+                filtered.map((e) => (
+                  <div key={e.id} className="py-4 flex items-center gap-4">
+                    <img
+                      src={e.profileFile}
+                      alt="avatar"
+                      className="w-12 h-12 rounded-xl object-cover ring-1 ring-black/10"
+                      onError={(ev) => { ev.currentTarget.src = "https://dummyimage.com/80x80/edf2f7/9aa4b2&text=👤"; }}
                     />
-                    <YAxis allowDecimals={false} tick={{ fill: "#374151" }} />
-                    <Tooltip contentStyle={{ backgroundColor: "white", border: "1px solid #E5E7EB", color: "#374151" }} />
-                    <Legend wrapperStyle={{ color: "#374151" }} />
-                    <Bar dataKey="count" name="Employés" fill="#4F46E5" radius={[8, 8, 0, 0]} />
-                  </BarChart>
-                </ResponsiveContainer>
+                    <div className="flex-1 min-w-0">
+                      <div className="font-semibold text-gray-900 truncate">
+                        {e.nom} {e.prenom}
+                      </div>
+                      <div className="text-sm text-gray-500 truncate">
+                        {e._posteTitre || e.poste?.titre || "—"}
+                      </div>
+                    </div>
+                    <span className={`text-xs px-2 py-1 rounded-full ${(e.statusEmploye || e._statusKey) === "actif" ? "bg-emerald-100 text-emerald-700" : "bg-gray-200 text-gray-600"}`}>
+                      {(e.statusEmploye || e._statusKey) === "actif" ? "Actif" : "Inactif"}
+                    </span>
+                  </div>
+                ))
               )}
             </div>
           </Card>
@@ -280,8 +294,8 @@ export default function DashboardRH({ onAddEmploye, onAddBulletin }) {
         </div>
 
         {/* Liste des employés récents */}
-        <div className="grid grid-cols-1 xl:grid-cols-2 gap-8">
-          <Card>
+        {/* <div className="grid grid-cols-1 xl:grid-cols-2 gap-8">
+          <Card className="xl:col-span-2" >
             <div className="flex items-center justify-between mb-4">
               <h3 className="font-semibold text-gray-900">Employés récents</h3>
               {!loading && <span className="text-xs text-gray-500">{filtered.length} affichés</span>}
@@ -353,7 +367,7 @@ export default function DashboardRH({ onAddEmploye, onAddBulletin }) {
               </button>
             </div>
           </Card>
-        </div>
+        </div> */}
 
         {/* Affichage d'erreur éventuel */}
         {error && (

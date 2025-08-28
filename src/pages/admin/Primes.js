@@ -73,7 +73,8 @@ export default function Primes() {
         {loading ? (
           <p>Chargement...</p>
         ) : (
-          <table className="min-w-full border border-gray-200">
+          <div className="overflow-x-auto bg-white rounded-xl shadow">
+          <table className="min-w-full border">
             <thead className="bg-gradient-to-r from-blue-100 to-blue-200">
               <tr >
                 <th className="px-4 py-2 border">Nom</th>
@@ -101,10 +102,11 @@ export default function Primes() {
               )}
             </tbody>
           </table>
+          </div>
         )}
 
         {/* Pagination simple */}
-        <div className="flex justify-between mt-4">
+        {/* <div className="flex justify-between mt-4">
           <button
             onClick={() => setPage((p) => Math.max(p - 1, 1))}
             className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300"
@@ -118,7 +120,7 @@ export default function Primes() {
           >
             Suivant
           </button>
-        </div>
+        </div> */}
       </Card>
 
       {/* Modale pour ajouter une prime */}

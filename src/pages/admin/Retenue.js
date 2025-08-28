@@ -79,7 +79,8 @@ export default function Retenue() {
         </div>
 
         {/* Tableau */}
-        <table className="w-full border-collapse border border-gray-300">
+        <div className="overflow-x-auto bg-white rounded-xl shadow">
+        <table className="min-w-full border">
         <thead className="bg-gradient-to-r from-blue-100 to-blue-200">
                       <tr >
                           <th className="border border-gray-300 p-2">Employé</th>
@@ -117,9 +118,10 @@ export default function Retenue() {
             )}
           </tbody>
         </table>
+        </div>
 
         {/* Pagination */}
-        <div className="mt-4 flex gap-2">
+        {/* <div className="mt-4 flex gap-2 justify-center">
           <button
             onClick={() => setPage((p) => Math.max(p - 1, 1))}
             disabled={page === 1}
@@ -137,7 +139,7 @@ export default function Retenue() {
           >
             Suivant
           </button>
-        </div>
+        </div> */}
       </Card>
 
       {/* Modal ajout */}
