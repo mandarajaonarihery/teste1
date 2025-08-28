@@ -53,42 +53,42 @@ const Sidebar = () => {
 
   const toggleSidebar = () => setIsOpen(!isOpen);
   const toggleMobileSidebar = () => setIsMobileOpen(!isMobileOpen);
-  
+
   const toggleSubMenu = (label) => {
     setOpenMenus((prev) => ({ ...prev, [label]: !prev[label] }));
   };
 
   const linkClass = ({ isActive }) =>
-    `flex items-center gap-3 px-4 py-3 text-sm font-medium rounded-lg transition-all duration-200 ${
+    `flex items-center gap-3 px-4 py-3 text-sm font-medium rounded-md transition-colors duration-200 ease-in-out ${
       isActive
-        ? "bg-gradient-to-r from-blue-50 to-blue-100 text-blue-700 border-l-4 border-blue-600 shadow-sm"
-        : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+        ? "bg-blue-100 text-blue-800 border-l-4 border-blue-600 shadow-md"
+        : "text-gray-700 hover:bg-gray-100 hover:text-gray-900"
     }`;
 
   return (
     <>
       {/* Mobile Sidebar */}
       <aside
-        className={`fixed top-0 left-0 h-full w-64 bg-white shadow-xl border-r z-40 transform transition-transform duration-300 ease-in-out md:hidden ${
+        className={`fixed top-0 left-0 h-full w-64 bg-white shadow-2xl border-r z-40 transform transition-transform duration-300 ease-in-out md:hidden ${
           isMobileOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
-        <div className="flex items-center justify-between px-4 py-4 border-b bg-gradient-to-r from-blue-50 to-white">
+        <div className="flex items-center justify-between px-4 py-4 border-b bg-gradient-to-r from-blue-100 to-blue-50">
           <h2 className="text-lg font-bold text-gray-800">Menu</h2>
           <button 
-            className="text-gray-600 hover:bg-gray-100 p-1 rounded-lg transition-colors" 
+            className="text-gray-700 hover:bg-gray-200 p-2 rounded-md transition-colors" 
             onClick={toggleMobileSidebar}
           >
             <X size={20} />
           </button>
         </div>
 
-        <nav className="mt-4 flex flex-col space-y-1 flex-1 px-2">
+        <nav className="mt-4 flex flex-col space-y-1 px-2">
           {links.map((item) =>
             item.children ? (
               <div key={item.label}>
                 <button
-                  className="flex items-center justify-between w-full px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-lg transition-colors"
+                  className="flex items-center justify-between w-full px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-md transition-colors"
                   onClick={() => toggleSubMenu(item.label)}
                 >
                   <span className="flex items-center gap-3">
@@ -130,21 +130,21 @@ const Sidebar = () => {
 
       {/* Desktop Sidebar */}
       <aside
-        className={`hidden md:flex md:flex-col h-full border-r border-gray-200 bg-white shadow-sm transition-all duration-300 ease-in-out ${
+        className={`hidden md:flex md:flex-col h-full border-r bg-white shadow-sm transition-all duration-300 ease-in-out ${
           isOpen ? "w-64" : "w-16"
         }`}
       >
-        <div className="flex items-center justify-between px-4 py-4 border-b bg-gradient-to-r from-blue-50 to-white">
+        <div className="flex items-center justify-between px-4 py-4 border-b bg-gradient-to-r from-blue-100 to-blue-50">
           {isOpen && <h2 className="text-lg font-bold text-gray-800">Menu</h2>}
           <button 
-            className="text-gray-600 hover:bg-gray-100 p-1 rounded-lg transition-colors" 
+            className="text-gray-700 hover:bg-gray-200 p-2 rounded-md transition-colors" 
             onClick={toggleSidebar}
           >
             {isOpen ? <ChevronLeft size={20} /> : <Menu size={20} />}
           </button>
         </div>
 
-        <nav className="mt-4 flex flex-col space-y-1 flex-1 px-2">
+        <nav className="mt-4 flex flex-col space-y-1 px-2">
           {links.map((item) =>
             item.children ? (
               <div 
@@ -154,7 +154,7 @@ const Sidebar = () => {
                 onMouseLeave={() => !isOpen && setHoveredMenu(null)}
               >
                 <button
-                  className={`flex items-center justify-between w-full px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-lg transition-colors ${
+                  className={`flex items-center justify-between w-full px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-md transition-colors ${
                     isOpen ? "" : "justify-center"
                   }`}
                   onClick={() => isOpen && toggleSubMenu(item.label)}
@@ -193,8 +193,8 @@ const Sidebar = () => {
                           className={({ isActive }) => 
                             `flex items-center gap-3 px-4 py-2.5 text-sm transition-colors ${
                               isActive 
-                                ? "bg-blue-50 text-blue-700 font-medium" 
-                                : "text-gray-600 hover:bg-gray-50"
+                                ? "bg-blue-100 text-blue-800 font-medium" 
+                                : "text-gray-700 hover:bg-gray-100"
                             }`
                           }
                         >
@@ -219,7 +219,7 @@ const Sidebar = () => {
       {/* Mobile toggle button */}
       {!isMobileOpen && (
         <button
-          className="md:hidden fixed top-4 left-4 z-50 bg-white p-2 rounded-lg shadow-md border border-gray-200"
+          className="md:hidden fixed top-4 left-4 z-50 bg-white p-2 rounded-full shadow-md border border-gray-200 hover:bg-gray-100 transition-colors"
           onClick={toggleMobileSidebar}
         >
           <Menu size={24} className="text-gray-700" />

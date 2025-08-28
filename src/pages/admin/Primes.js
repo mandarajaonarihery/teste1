@@ -47,13 +47,13 @@ export default function Primes() {
   }, [search, primes]);
 
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col">
-      <Card className="flex-1">
+    <div className="min-h-screen bg-gradient-to-r from-indigo-50 to-white flex flex-col p-6">
+      <Card className="flex-1 bg-white shadow-2xl rounded-2xl p-8">
         <div className="flex justify-between items-center mb-4">
           <h1 className="text-2xl font-bold">Liste des Primes</h1>
           <button
             onClick={() => setShowForm(true)}
-            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+             className="flex items-center gap-2 bg-blue-600 text-white px-6 py-2 rounded-full hover:bg-blue-700 transition"
           >
             Ajouter une prime
           </button>
@@ -66,7 +66,7 @@ export default function Primes() {
             placeholder="Rechercher par nom de prime ou employé..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="w-full border border-gray-300 rounded-full py-2 pl-4 pr-10 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
 
@@ -74,8 +74,8 @@ export default function Primes() {
           <p>Chargement...</p>
         ) : (
           <table className="min-w-full border border-gray-200">
-            <thead>
-              <tr className="bg-gray-100">
+            <thead className="bg-gradient-to-r from-blue-100 to-blue-200">
+              <tr >
                 <th className="px-4 py-2 border">Nom</th>
                 <th className="px-4 py-2 border">Montant</th>
                 <th className="px-4 py-2 border">Employé</th>

@@ -46,20 +46,20 @@ const Salaire = () => {
   }, [search, bulletins]);
 
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col">
-      <Card className="flex-1">
+    <div className="min-h-screen bg-gradient-to-r from-indigo-50 to-white flex flex-col p-6">
+      <Card className="flex-1 bg-white shadow-2xl rounded-2xl p-8">
         <h1 className="text-2xl font-bold mb-4">Gestion des Salaires</h1>
 
-        <div className="mb-4 flex justify-between items-center">
+        <div className="mb-6 flex justify-between items-center">
           <input
             type="text"
             placeholder="Rechercher un employé..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="border rounded p-2 w-1/2"
+            className="w-full border border-gray-300 rounded-full py-2 pl-4 pr-10 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
           <button
-            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+             className="flex items-center gap-2 bg-blue-600 text-white px-6 py-2 rounded-full hover:bg-blue-700 transition"
             onClick={() => setShowModal(true)}
           >
             Ajouter un bulletin
@@ -67,8 +67,8 @@ const Salaire = () => {
         </div>
 
         <table className="w-full border-collapse border border-gray-300">
-          <thead>
-            <tr className="bg-gray-100">
+        <thead className="bg-gradient-to-r from-blue-100 to-blue-200">
+            <tr >
               <th className="border border-gray-300 p-2">Employé</th>
               <th className="border border-gray-300 p-2">Salaire Brut</th>
               <th className="border border-gray-300 p-2">Salaire Net</th>

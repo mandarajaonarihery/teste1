@@ -38,32 +38,32 @@ const Cotisations = () => {
   if (error) return <p className="text-red-500">{error}</p>;
 
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col">
-      <Card className="flex-1">
+    <div className="min-h-screen bg-gradient-to-r from-indigo-50 to-white flex flex-col p-6">
+      <Card className="flex-1 bg-white shadow-2xl rounded-2xl p-8">
         {/* En-tête avec bouton Ajouter */}
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-4">
           <h1 className="text-2xl font-bold">Liste des cotisations</h1>
           <button
             onClick={() => setShowForm(true)}
-            className="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition"
+             className="flex items-center gap-2 bg-blue-600 text-white px-6 py-2 rounded-full hover:bg-blue-700 transition"
           >
             <Plus size={18} /> Ajouter
           </button>
         </div>
-
+        <div className="relative mb-6">
         {/* Champ recherche */}
         <input
           type="text"
           placeholder="Rechercher par nom ou taux..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          className="mb-4 w-full p-2 border rounded-lg"
+         className="w-full border border-gray-300 rounded-full py-2 pl-4 pr-10 focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
-
+      </div>
         {/* Tableau */}
         <div className="overflow-x-auto bg-white rounded-xl shadow">
           <table className="min-w-full border">
-            <thead className="bg-gray-100">
+          <thead className="bg-gradient-to-r from-blue-100 to-blue-200">
               <tr>
                 <th className="px-4 py-2 border">Nom</th>
                 <th className="px-4 py-2 border">Taux (%)</th>

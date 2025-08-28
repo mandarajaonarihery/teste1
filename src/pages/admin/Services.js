@@ -6,7 +6,7 @@ import SearchHeader from "../../components/ui/SearchHeader";
 import { Button } from "../../components/ui/button";
 import ModalCustom from "../../components/ui/ModalCustom";
 import AddServiceForm from "../../components/modalComponents/AddService";
-
+import Card from "../../components/common/Card";
 export default function ServicesPage() {
   const [services, setServices] = useState([]);
   const [filtered, setFiltered] = useState([]);
@@ -48,7 +48,8 @@ export default function ServicesPage() {
 
 
   return (
-    <div className="flex bg-gray-100 min-h-screen justify-center">
+    <div className="min-h-screen bg-gradient-to-r from-indigo-50 to-white flex flex-col p-6">
+      <Card className="flex-1 bg-white shadow-2xl rounded-2xl p-8">
       <CardCustom className="w-full shadow-xl rounded-xl overflow-hidden">
         <CardHeader
           title={
@@ -90,6 +91,7 @@ export default function ServicesPage() {
       >
         <AddServiceForm onSuccess={handleSuccess} />
       </ModalCustom>
+      </Card>
     </div>
   );
 }

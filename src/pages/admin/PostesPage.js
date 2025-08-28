@@ -4,8 +4,6 @@ import PosteForm from "../../components/modalComponents/AddPoste";
 import { Edit2, ToggleLeft, ToggleRight } from "lucide-react";
 import Card from "../../components/common/Card";
 import { useSnackbar } from "../../components/ui/SnackbarContext";
-
-// ✅ Import corrigé (pas de point final, extension implicite)
 import PostesConfirmation from "../../components/ui/PostesConfirmation";
 
 export default function PostesPage() {
@@ -38,14 +36,12 @@ export default function PostesPage() {
     fetchPostes();
   }, [page]);
 
-  // Filtrage sécurisé
   const filteredPostes = Array.isArray(postes)
     ? postes.filter((poste) =>
         poste.titre.toLowerCase().includes(search.toLowerCase())
       )
     : [];
 
-  // Demande de confirmation avant changement de statut
   const handleRequestToggle = (id) => {
     setSelectedPosteId(id);
     setConfirmOpen(true);
@@ -65,13 +61,11 @@ export default function PostesPage() {
     }
   };
 
-  // Ouvrir le formulaire pour ajouter ou éditer
   const handleOpenForm = (poste = null) => {
     setEditingPoste(poste);
     setShowForm(true);
   };
 
-  // Après ajout/modification
   const handleFormSubmit = async (data) => {
     try {
       const payload = {
@@ -97,85 +91,103 @@ export default function PostesPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col">
-      <Card className="flex-1">
-        <div className="flex justify-between items-center mb-4">
-          <h1 className="text-2xl font-bold">Postes</h1>
+    <div className="min-h-screen bg-gradient-to-r from-indigo-50 to-white flex flex-col p-6">
+      <Card className="flex-1 bg-white shadow-2xl rounded-2xl p-8">
+        <div className="flex flex-col md:flex-row justify-between items-center mb-6">
+          <h1 className="text-3xl font-extrabold text-gray-800 mb-4 md:mb-0">
+            Postes
+          </h1>
           <button
-            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
+             className="flex items-center gap-2 bg-blue-600 text-white px-6 py-2 rounded-full hover:bg-blue-700 transition"
             onClick={() => handleOpenForm()}
           >
             + Ajouter un poste
           </button>
         </div>
-
-        {/* Barre de recherche */}
+        <div className="relative mb-6">
         <input
           type="text"
           placeholder="Rechercher un poste..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="mb-4 px-4 py-2 border rounded w-full md:w-1/3"
+         className="w-full border border-gray-300 rounded-full py-2 pl-4 pr-10 focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
+        </div>
 
-        {/* Loader */}
         {loading ? (
-          <div className="text-center py-10 text-gray-500">Chargement des postes...</div>
+          <div className="text-center py-10 text-gray-500 font-medium">
+            Chargement des postes...
+          </div>
         ) : (
-          <table className="min-w-full border rounded">
-            <thead className="bg-gray-100">
-              <tr>
-                <th className="px-4 py-2 text-left">Nom du poste</th>
-                <th className="px-4 py-2 text-left">Description</th>
-                <th className="px-4 py-2 text-left">Salaire de base</th>
-                <th className="px-4 py-2">Statut</th>
-                <th className="px-4 py-2">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredPostes.length > 0 ? (
-                filteredPostes.map((poste) => (
-                  <tr key={poste.id} className="border-b hover:bg-gray-50">
-                    <td className="px-4 py-2">{poste.titre}</td>
-                    <td className="px-4 py-2">{poste.description}</td>
-                    <td className="px-4 py-2">{poste.salaire_base}</td>
-                    <td className="px-4 py-2 text-center">
-                      {poste.status ? (
-                        <span className="text-green-600 font-semibold">Actif</span>
-                      ) : (
-                        <span className="text-red-600 font-semibold">Inactif</span>
-                      )}
-                    </td>
-                    <td className="px-4 py-2 flex gap-2 justify-center">
-                      <button
-                        onClick={() => handleOpenForm(poste)}
-                        className="text-blue-600 hover:text-blue-800"
-                        title="Modifier"
-                      >
-                        <Edit2 size={18} />
-                      </button>
-                      <button
-                        onClick={() => handleRequestToggle(poste.id)}
-                        className="text-gray-600 hover:text-gray-800"
-                        title="Activer / Désactiver"
-                      >
-                        {poste.status ? <ToggleLeft size={18} /> : <ToggleRight size={18} />}
-                      </button>
+          <div className="overflow-x-auto">
+            <table className="min-w-full">
+              <thead className="bg-gradient-to-r from-blue-100 to-blue-200">
+                <tr>
+                  <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700">
+                    Nom du poste
+                  </th>
+                  <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700">
+                    Description
+                  </th>
+                  <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700">
+                    Salaire de base
+                  </th>
+                  <th className="px-6 py-3 text-center text-sm font-semibold text-gray-700">
+                    Statut
+                  </th>
+                  <th className="px-6 py-3 text-center text-sm font-semibold text-gray-700">
+                    Actions
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-gray-200">
+                {filteredPostes.length > 0 ? (
+                  filteredPostes.map((poste) => (
+                    <tr key={poste.id} className="hover:bg-blue-50 transition">
+                      <td className="px-6 py-4 text-gray-800">{poste.titre}</td>
+                      <td className="px-6 py-4 text-gray-600">{poste.description}</td>
+                      <td className="px-6 py-4 text-gray-800">{poste.salaire_base}</td>
+                      <td className="px-6 py-4 text-center">
+                        {poste.status ? (
+                          <span className="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm font-semibold">
+                            Actif
+                          </span>
+                        ) : (
+                          <span className="bg-red-100 text-red-700 px-3 py-1 rounded-full text-sm font-semibold">
+                            Inactif
+                          </span>
+                        )}
+                      </td>
+                      <td className="px-6 py-4 flex gap-4 justify-center">
+                        <button
+                          onClick={() => handleOpenForm(poste)}
+                          className="text-blue-600 hover:text-blue-800 transition"
+                          title="Modifier"
+                        >
+                          <Edit2 size={20} />
+                        </button>
+                        <button
+                          onClick={() => handleRequestToggle(poste.id)}
+                          className="text-gray-600 hover:text-gray-800 transition"
+                          title="Activer / Désactiver"
+                        >
+                          {poste.status ? <ToggleLeft size={20} /> : <ToggleRight size={20} />}
+                        </button>
+                      </td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan={5} className="text-center py-6 text-gray-500 font-medium">
+                      Aucun poste trouvé
                     </td>
                   </tr>
-                ))
-              ) : (
-                <tr>
-                  <td colSpan={5} className="text-center py-4 text-gray-500">
-                    Aucun poste trouvé
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
+                )}
+              </tbody>
+            </table>
+          </div>
         )}
 
-        {/* Formulaire modal */}
         {showForm && (
           <PosteForm
             poste={editingPoste}
@@ -184,7 +196,6 @@ export default function PostesPage() {
           />
         )}
 
-        {/* Confirmation changement statut */}
         <PostesConfirmation
           isOpen={confirmOpen}
           onClose={() => setConfirmOpen(false)}
